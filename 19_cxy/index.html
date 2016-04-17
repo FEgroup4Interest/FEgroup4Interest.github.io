@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>18</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+	ul{display: flex;align-items: flex-end;}
+li{list-style: none;width: 20px; background: red;color: #fff;margin-right: 10px;}
+ul:after{content: '';display: table;clear: both;height: 100px;}
+
+	</style>
+</head>
+<body>
+<input type="text" id="input"></input>
+<button id="l_in">左侧入</button>
+<button id="r_in">右侧入</button>
+
+<button id="l_out">左侧出</button>
+<button id="r_out">右侧出</button>
+<button id="layout">排序</button>
+<ul id="list">
+</ul>
+</body>
+<script type="text/javascript">
+(function () {
+	var input = document.getElementById('input');
+	var l_in = document.getElementById('l_in');
+	var r_in = document.getElementById('r_in');
+	var l_out = document.getElementById('l_out');
+	var r_out = document.getElementById('r_out');
+	var sortbtn = document.getElementById('layout');
+	var arr = ['50','30','40','67']
+
+	var list = document.getElementById('list');
+
+	l_in.onclick = function () {
+		var num = input.value
+		leftIn(num,list,arr)
+		console.log(arr)		
+	}
+	l_out.onclick = function () {
+		leftOut(list,arr)
+		console.log(arr)
+	}
+	r_in.onclick = function () {
+		var num = input.value
+		rightIn(num,list,arr)
+		console.log(arr)
+	}
+	r_out.onclick = function () {
+		rightOut(list,arr)
+		console.log(arr)
+	}
+	sortbtn.onclick = function() {
+		arr = qsort(arr)
+		draw(list,arr)
+		console.log(arr)
+	}
+	
+})()
+
+function check(num,arr) {
+	if (arr.length <= 60) {
+		if (num && num.match(/[0-9]/) && num>10 && num<100) {
+			return 1
+		}else{
+			return 0
+		}		
+	}else{
+		return 2
+	}
+}
+function leftIn(num,list,arr) {
+	if (check(num,arr) === 1) {
+		arr.unshift(num)
+		draw(list,arr)
+	}else if(check(num,arr) === 0){
+		console.log('类型错误')
+	}else {
+		console.log('长度超出')
+	}
+
+}
+function leftOut(list,arr) {
+	arr.shift()
+	draw(list,arr)
+}
+function rightIn(num,list,arr) {
+	if (check(num,arr) === 1) {
+		arr.push(num)
+		draw(list,arr)
+	}else if(check(num,arr) === 0){
+		console.log('类型错误')
+	}else {
+		console.log('长度超出')
+	}
+
+}
+function rightOut(list,arr) {
+	arr.pop()
+	draw(list,arr)
+}
+function draw(list,arr) {
+	list.innerHTML='';
+	for (var i = 0; i < arr.length; i++) {
+		var li = document.createElement('li')
+		li.style.height = arr[i] + 'px';
+		list.appendChild(li)
+	}
+}
+function qsort(arr) {
+	arr = arr.concat()
+	var list = document.getElementById('list');
+	if (arr.length == 0) {
+		return []
+	}
+	var left = [];
+	var right = [];
+	var pivotIndex = Math.floor(arr.length / 2);
+
+	var sign = arr.splice(pivotIndex,1)[0];
+	for (var i = 0; i < arr.length; i++) {
+		if (arr[i] < sign) {
+			left.push(arr[i])
+			
+		} else{
+			right.push(arr[i])
+		}
+	}
+	var li = left.concat(sign,right)
+	
+	return qsort(left).concat(sign,qsort(right))
+}
+</script>
+</html>
